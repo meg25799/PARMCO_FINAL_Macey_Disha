@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PARMCO Final Project | Macey Glad &amp; Disha Rachur</title>
+  <style>
+    :root { --main: #1a5276; --light: #eaf2f8; --gray: #555; }
+    * { box-sizing: border-box; }
+    body { font-family: "Segoe UI", Arial, sans-serif; margin: 0; background: #f7f9fb; color: #222; line-height: 1.6; }
+    header { background: var(--main); color: white; padding: 40px 20px 30px; text-align: center; }
+    header h1 { margin: 0 0 5px; font-size: 2.3em; }
+    header p { margin: 0; opacity: 0.9; }
+    nav { background: #154360; text-align: center; padding: 10px; position: sticky; top: 0; z-index: 10; }
+    nav a { color: white; text-decoration: none; margin: 0 14px; font-weight: 600; }
+    nav a:hover { text-decoration: underline; }
+    main { max-width: 1000px; margin: auto; padding: 20px; }
+    h2 { color: var(--main); border-bottom: 3px solid var(--main); padding-bottom: 5px; margin-top: 45px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }
+    .card { background: white; border-radius: 10px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border-top: 4px solid var(--main); }
+    .card h3 { margin: 0 0 6px; font-size: 1.1em; }
+    .card p { margin: 0 0 12px; color: var(--gray); font-size: 0.95em; }
+    .btn { display: inline-block; background: var(--main); color: white; padding: 6px 14px; border-radius: 6px; text-decoration: none; font-size: 0.9em; margin-right: 6px; }
+    .btn.alt { background: white; color: var(--main); border: 1px solid var(--main); }
+    .btn:hover { opacity: 0.85; }
+    details { margin-top: 12px; }
+    summary { cursor: pointer; color: var(--main); font-weight: 600; }
+    iframe { width: 100%; height: 600px; border: 1px solid #ccc; border-radius: 6px; margin-top: 10px; }
+    .parts { background: var(--light); padding: 12px 18px; border-radius: 8px; }
+    .human-edit { background: #fff3cd; border-left: 4px solid #e0a800; padding: 8px; }
+    footer { text-align: center; color: var(--gray); padding: 30px; font-size: 0.9em; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>PARMCO Final Project</h1>
+  <p>Macey Glad &amp; Disha Rachur | ECSE 4235, University of Georgia, Fall 2026</p>
+</header>
+
+<nav>
+  <a href="#overview">Overview</a>
+  <a href="#hardware">Hardware</a>
+  <a href="#software">Software</a>
+  <a href="#app">iOS App</a>
+  <a href="#ai">AI Interaction</a>
+</nav>
+
+<main>
+
+  <!-- ================= OVERVIEW ================= -->
+  <h2 id="overview">Project Overview</h2>
+  <p>PARMCO is a Raspberry Pi 4 motor control system that drives a NEMA 17 stepper motor through an SN754410NE H-bridge. It uses an AS5600 magnetic encoder for position feedback and an IR sensor for detection, and it is controlled from a custom iOS app over Bluetooth.</p>
+  <div class="parts">
+    <strong>Key components:</strong> Raspberry Pi 4 · SN754410NE H-bridge · NEMA 17 stepper · AS5600 encoder (I2C) · IR sensor · iOS Bluetooth app
+  </div>
+
+  <!-- ================= HARDWARE ================= -->
+  <h2 id="hardware">Hardware Documentation</h2>
+  <div class="grid">
+
+    <div class="card">
+      <h3>Detailed Schematic</h3>
+      <p>Full wiring of the Pi, H-bridge, motor and sensors.</p>
+      <a class="btn" href="Hardware_Docs/PARMCO_Schematic_Detailed.pdf" target="_blank">Open PDF</a>
+      <details>
+        <summary>Preview</summary>
+        <iframe src="Hardware_Docs/PARMCO_Schematic_Detailed.pdf"></iframe>
+      </details>
+    </div>
+
+    <div class="card">
+      <h3>Circuit Analysis: How It Works (CP2)</h3>
+      <p>Explanation of the H-bridge circuit and how the system operates.</p>
+      <a class="btn" href="Hardware_Docs/PARMCO_Circuit_Analysis__How_it_Works__CP2.pdf" target="_blank">Open PDF</a>
+      <details>
+        <summary>Preview</summary>
+        <iframe src="Hardware_Docs/PARMCO_Circuit_Analysis__How_it_Works__CP2.pdf"></iframe>
+      </details>
+    </div>
+
+    <div class="card">
+      <h3>Parts List</h3>
+      <p>All components used in the build.</p>
+      <a class="btn" href="Hardware_Docs/PARMCO_Parts_List.pdf" target="_blank">Open PDF</a>
+      <details>
+        <summary>Preview</summary>
+        <iframe src="Hardware_Docs/PARMCO_Parts_List.pdf"></iframe>
+      </details>
+    </div>
+
+    <div class="card">
+      <h3>Hardware Notes</h3>
+      <p>Additional hardware notes.</p>
+      <a class="btn alt" href="Hardware_Docs/hardware.txt" target="_blank">Open Notes</a>
+    </div>
+
+  </div>
+
+  <!-- ================= SOFTWARE ================= -->
+  <h2 id="software">Software Documentation</h2>
+  <div class="grid">
+
+    <div class="card">
+      <h3>CP2 Software Documentation</h3>
+      <p>Software design, structure and functionality for Checkpoint 2.</p>
+      <a class="btn" href="Software_Docs/PARMCO_CP2_Software_Documentation_Final.pdf" target="_blank">Open PDF</a>
+      <details>
+        <summary>Preview</summary>
+        <iframe src="Software_Docs/PARMCO_CP2_Software_Documentation_Final.pdf"></iframe>
+      </details>
+    </div>
+
+    <div class="card">
+      <h3>Software Notes</h3>
+      <p>Additional software notes.</p>
+      <a class="btn alt" href="Software_Docs/software_documents.txt" target="_blank">Open Notes</a>
+    </div>
+
+  </div>
+
+  <!-- ================= iOS APP ================= -->
+  <h2 id="app">iOS Control App</h2>
+  <p>A SwiftUI app that connects to PARMCO over Bluetooth.</p>
+  <div class="grid">
+
+    <div class="card">
+      <h3>PARMCOApp.swift</h3>
+      <p>App entry point.</p>
+      <a class="btn" href="https://github.com/meg25799/PARMCO_FINAL_Macey_Disha/blob/main/App_Files/PARMCOApp.swift" target="_blank">View Code</a>
+    </div>
+
+    <div class="card">
+      <h3>ContentView.swift</h3>
+      <p>Main user interface.</p>
+      <a class="btn" href="https://github.com/meg25799/PARMCO_FINAL_Macey_Disha/blob/main/App_Files/ContentView.swift" target="_blank">View Code</a>
+    </div>
+
+    <div class="card">
+      <h3>BluetoothManager.swift</h3>
+      <p>Handles the Bluetooth connection and communication.</p>
+      <a class="btn" href="https://github.com/meg25799/PARMCO_FINAL_Macey_Disha/blob/main/App_Files/BluetoothManager.swift" target="_blank">View Code</a>
+    </div>
+
+    <div class="card">
+      <h3>Full Xcode Project</h3>
+      <p>Download the complete app project.</p>
+      <a class="btn" href="App_Files/PARMCO.zip" download>Download ZIP</a>
+      <a class="btn alt" href="https://github.com/meg25799/PARMCO_FINAL_Macey_Disha/blob/main/App_Files/App_Swift_Files" target="_blank">File Notes</a>
+    </div>
+
+  </div>
+
+  <!-- ================= AI INTERACTION ================= -->
+  <h2 id="ai">AI Interaction &amp; Reflection</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>AI Interaction Log</h3>
+      <p>Record of how AI was used throughout the project.</p>
+      <a class="btn" href="AI_Interaction/AI_Interaction_docs.txt" target="_blank">Open Log</a>
+    </div>
+  </div>
+  <p><strong>Pros and cons of working with AI:</strong> (Add your reflection here.)</p>
+
+  <!-- Marker format for human changes:
+  <p class="human-edit">[HUMAN EDIT] ... [END HUMAN EDIT]</p>
+  -->
+
+</main>
+
+<footer>
+  © 2026 Macey Glad &amp; Disha Rachur ·
+  <a href="https://github.com/meg25799/PARMCO_FINAL_Macey_Disha">View repository on GitHub</a>
+</footer>
+
+</body>
+</html>
