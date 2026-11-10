@@ -1,5 +1,6 @@
 # PARMCO_FINAL_Macey_Disha
 This is the documentation required for the live updates of PARMCO final project CP3 and beyond. 
+Live page link to the GitHub website requirement: https://meg25799.github.io/PARMCO_FINAL_Macey_Disha/
 
 This project was completed using AI, with minimal human tweaks. Schematics, general documentation, and diagrams were created by Copilot with Claude integration (Opus 5.5), and code was primarily developed using Google Gemini Pro. 
 
