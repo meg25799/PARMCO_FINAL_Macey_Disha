@@ -49,6 +49,158 @@
 <main>
 
   <!-- ================= OVERVIEW ================= -->
+  <!-- ================= OVERVIEW ================= -->
+  <style>
+    .lead { font-size: 1.08em; }
+    .flow { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; margin: 20px 0; }
+    .flow .box { background: white; border: 2px solid var(--main); border-radius: 8px; padding: 10px 14px; text-align: center; font-weight: 600; min-width: 120px; }
+    .flow .box small { display: block; font-weight: normal; color: var(--gray); }
+    .flow .arrow { font-size: 1.5em; color: var(--main); }
+    table.spec { width: 100%; border-collapse: collapse; margin: 15px 0; background: white; font-size: 0.95em; }
+    table.spec th { background: var(--main); color: white; text-align: left; padding: 8px 10px; }
+    table.spec td { border-bottom: 1px solid #ddd; padding: 8px 10px; vertical-align: top; }
+    table.spec tr:nth-child(even) td { background: #f4f8fb; }
+    .callout { background: var(--light); border-left: 5px solid var(--main); padding: 12px 16px; border-radius: 6px; margin: 15px 0; }
+    .ref { font-size: 0.9em; margin-top: 8px; }
+    .ref a { color: var(--main); font-weight: 600; }
+    hr.section { border: none; border-top: 1px solid #d5dde5; margin: 40px 0 10px; }
+    .tag { display: inline-block; background: var(--main); color: white; font-size: 0.75em; padding: 2px 8px; border-radius: 10px; margin-left: 6px; vertical-align: middle; }
+  </style>
+
+  <!-- ================= HOW IT WORKS ================= -->
+  <h2 id="how">How the System Works</h2>
+
+  <h3>System Architecture</h3>
+  <p>The phone sends commands, the RP4 closes the control loop, and the sensors report back.</p>
+  <div class="flow">
+    <div class="box">iOS App<small>controls + status</small></div>
+    <span class="arrow">⇄</span>
+    <div class="box">Bluetooth<small>remembered pairing</small></div>
+    <span class="arrow">⇄</span>
+    <div class="box">Raspberry Pi 4<small>C + ARM assembly</small></div>
+    <span class="arrow">→</span>
+    <div class="box">4N25 + SN754410NE<small>enable + H-bridge</small></div>
+    <span class="arrow">→</span>
+    <div class="box">NEMA 17 + Propeller<small>1.8° / step</small></div>
+  </div>
+  <div class="flow">
+    <div class="box">AS5600 Encoder<small>shaft angle (I2C)</small></div>
+    <span class="arrow">→</span>
+    <div class="box">Raspberry Pi 4<small>feedback control</small></div>
+    <span class="arrow">←</span>
+    <div class="box">IR Sensor<small>2 pulses / rev</small></div>
+  </div>
+
+  <h3>Hardware Design</h3>
+  <table class="spec">
+    <tr><th>Component</th><th>Role in PARMCO</th></tr>
+    <tr><td>Raspberry Pi 4</td><td>Runs the motor, sensor, control and logging code. Boots quiet and reports RPM and angle to the app.</td></tr>
+    <tr><td>NEMA 17 stepper (XY42STH34-0354A)</td><td>Actuator: 1.8° per step, 200 steps per revolution, rated 12 V and 0.35 A per phase. The propeller mounts on its shaft.</td></tr>
+    <tr><td>SN754410NE quad half-H driver</td><td>Wired as two H-bridges, one for each motor coil. VCC1 (pin 16, 5 V logic) and VCC2 (pin 8, 12 V motor) come from the bench DC supply, never from the RP4.</td></tr>
+    <tr><td>4N25 optocoupler</td><td>Isolated on/off enable for the H-bridge. Wired so the motor is disabled whenever the RP4 GPIO is low or floating, so the hardware guarantees a quiet start-up, even during boot.</td></tr>
+    <tr><td>AS5600 magnetic encoder</td><td>Measures the absolute shaft angle over I2C. Mounted on the class 3D-printed motor stand. Used for Maintain, set to zero, angle targets and the feedback hold.</td></tr>
+    <tr><td>IR sensor</td><td>Measures propeller RPM. The two-blade propeller gives two pulses per revolution.</td></tr>
+    <tr><td>Propeller + printed protractor</td><td>Visual and independent reference. One blade is marked as the main reference blade.</td></tr>
+  </table>
+  <p class="ref">📄 References:
+    <a href="Hardware_Docs/PARMCO_Schematic_Detailed.pdf" target="_blank">Detailed Schematic</a> ·
+    <a href="Hardware_Docs/PARMCO_Circuit_Analysis__How_it_Works__CP2.pdf" target="_blank">Circuit Analysis: How It Works</a> ·
+    <a href="Hardware_Docs/PARMCO_Parts_List.pdf" target="_blank">Parts List</a>
+  </p>
+
+  <h3>Software Design</h3>
+  <p>The software is split into three layers so that time-critical motor control stays fast and predictable.</p>
+  <table class="spec">
+    <tr><th>Layer</th><th>Language</th><th>Responsibilities</th></tr>
+    <tr><td>Motor interface</td><td>ARM assembly</td><td><strong>Step routine:</strong> looks up the next coil pattern in a table and drives the four H-bridge inputs. <strong>Enable routine:</strong> turns the H-bridge on and off through the 4N25. <strong>Step-timing loop:</strong> uses the ARM generic timer to wait until each step is due. These routines are called from C using the AAPCS convention.</td></tr>
+    <tr><td>Control and services</td><td>C (Linux)</td><td>Bluetooth communication, encoder reads, RPM calculation, speed and position control math, feedback hold and CSV logging. All GPIO access goes through the class RP4 library.</td></tr>
+    <tr><td>User interface</td><td>Swift / SwiftUI</td><td>iOS app with every control, a live status display, input validation and Bluetooth connection management.</td></tr>
+  </table>
+  <p class="ref">📄 Reference:
+    <a href="Software_Docs/PARMCO_CP2_Software_Documentation_Final.pdf" target="_blank">Software Design Documentation</a>
+  </p>
+
+  <h3>Start-up and Bluetooth Behavior</h3>
+  <ul>
+    <li>The RP4 starts the PARMCO program on its own at boot. The motor stays disabled and coil current stays near zero.</li>
+    <li>The phone requests the Bluetooth connection from inside the app. The pairing is remembered on both devices, and the system can re-pair after the phone "forgets" the connection or the app is uninstalled and reinstalled.</li>
+    <li>After connecting, the app shows the defaults: <strong>Manual mode, clockwise, 20 RPM, motor stopped, not calibrated</strong>.</li>
+  </ul>
+
+  <hr class="section">
+
+  <!-- ================= CONTROL MODES ================= -->
+  <h2 id="control">App Controls and Control Modes</h2>
+
+  <h3>Phone App Controls</h3>
+  <table class="spec">
+    <tr><th>Control</th><th>What it does</th></tr>
+    <tr><td>Start / Stop</td><td>Start runs the motor. Stop disables the H-bridge through the 4N25 and turns off all feedback, including the hold, so the propeller turns freely by hand.</td></tr>
+    <tr><td>Direction</td><td>Clockwise or counterclockwise.</td></tr>
+    <tr><td>Faster / Slower</td><td>Changes speed in small steps while running (Manual mode).</td></tr>
+    <tr><td>Desired RPM</td><td>Accepts 10–100 RPM. Values outside that range are rejected with a visible warning, and the motor keeps its current setting.</td></tr>
+    <tr><td>Mode selector</td><td>Switches between Manual and Maintain.</td></tr>
+    <tr><td>Calibrate zero</td><td>With the reference blade aligned to 0° on the protractor, stores the current encoder reading as the zero offset.</td></tr>
+    <tr><td>Set to zero</td><td>Returns the reference blade to 0° using encoder feedback. Refused until the system is calibrated.</td></tr>
+    <tr><td>Angle target</td><td>Moves the blade to an entered angle, at the speed set by desired RPM.</td></tr>
+    <tr><td>Logging toggle</td><td>Starts and stops a CSV log on the RP4. The app shows the logging state, file name and elapsed time.</td></tr>
+    <tr><td>Over-range unlock</td><td>Allows speeds above 100 RPM for Tests B and G only. Turns itself off when the motor stops.</td></tr>
+    <tr><td>Status display</td><td>Shows the IR RPM, encoder-derived RPM, encoder angle and calibration status.</td></tr>
+  </table>
+
+  <h3>Speed Control <span class="tag">Final checkpoint</span></h3>
+  <div class="grid">
+    <div class="card">
+      <h3>Manual Mode (open loop)</h3>
+      <p>The user sets the speed with desired RPM and the faster and slower buttons. The RP4 converts RPM into a step rate and steps at that rate without correcting for errors. If the motor is pushed or slowed, nothing makes up for it.</p>
+    </div>
+    <div class="card">
+      <h3>Maintain Mode (closed loop)</h3>
+      <p>The RP4 keeps comparing the desired RPM with the measured RPM and adjusts the step rate to remove the difference. If the propeller is slowed by a disturbance, Maintain brings it back to the desired speed once the disturbance is released.</p>
+    </div>
+  </div>
+  <div class="callout">
+    <strong>Feedback source:</strong> Maintain can use IR RPM, encoder-derived RPM, or both. At low speed the IR sensor updates slowly: at 20 RPM it gives only about one pulse every 1.5 seconds. The encoder reads the angle continuously, so encoder-derived RPM reacts much faster. <em>[Add your team's chosen source and why.]</em>
+  </div>
+
+  <h3>Position Control <span class="tag">Final checkpoint</span></h3>
+  <ol>
+    <li><strong>Calibrate zero:</strong> ties encoder zero to protractor zero. This is required after every power-up. Until then, the app shows "not calibrated" and refuses position commands.</li>
+    <li><strong>Set to zero:</strong> drives the blade until the offset-corrected encoder angle reads 0°, handling the wrap between 359° and 0°.</li>
+    <li><strong>Angle target:</strong> moves to any entered angle, approaching from either direction, and lands on the nearest reachable step. For example, a 137° target lands at 136.8° in full-step mode.</li>
+  </ol>
+  <p>Because these moves use the encoder rather than the step count, set to zero still returns the blade to 0° after the motor has lost steps.</p>
+
+  <h3>Feedback Hold <span class="tag">Final checkpoint</span></h3>
+  <p>After a set to zero or angle target move, PARMCO holds its position <strong>with the encoder instead of coil current</strong>:</p>
+  <ul>
+    <li>The RP4 disables the H-bridge, so no coil current flows. The motor's detent torque (about 120 g·cm) holds the unloaded propeller.</li>
+    <li>The encoder keeps watching the shaft. If the error leaves a <strong>±1° band</strong> around the target, the RP4 re-enables the H-bridge, corrects all the way back to the target and disables again. Inside the band it does nothing, so sensor noise cannot cause chatter.</li>
+    <li>Before re-enabling, the RP4 picks the coil pattern that matches the encoder's current angle. Coil patterns repeat every 7.2°, so re-applying the old pattern after a large nudge would snap the rotor a full 7.2° off target.</li>
+    <li>Pressing <strong>Stop</strong> cancels the hold, and the shaft then turns freely.</li>
+  </ul>
+
+  <h3>Data Logging</h3>
+  <p>Logging runs alongside any mode without slowing the control loop. Each CSV row is time-stamped from the Linux monotonic clock and records the mode, commanded RPM and angle, step count and step angle, encoder angle (wrapped and cumulative), IR, encoder and app RPM, enable state, and optional event markers. These logs are the source for all test results.</p>
+
+  <hr class="section">
+
+  <!-- ================= VALIDATION ================= -->
+  <h2 id="testing">Validation Testing</h2>
+  <p>Each function is confirmed with measurements against a reference that works on a different physical principle from the encoder.</p>
+  <table class="spec">
+    <tr><th>Test</th><th>What it shows</th><th>Independent check</th></tr>
+    <tr><td>A. RPM sensing and sweep</td><td>IR, encoder-derived and app RPM agree with the commanded speed from 10–100 RPM</td><td>Blade count or slow-motion video</td></tr>
+    <tr><td>B. Open-loop missed steps</td><td>Without feedback, the motor loses steps and the step count no longer matches the shaft position</td><td>Protractor and encoder angle</td></tr>
+    <tr><td>C. Static angle accuracy</td><td>Angle targets land within one step from both directions</td><td>Printed protractor</td></tr>
+    <tr><td>D. Step response</td><td>How quickly and cleanly the blade moves from 0° to 90° at different speeds</td><td>Protractor and slow-motion video</td></tr>
+    <tr><td>E. Disturbance rejection</td><td>Maintain returns to the desired RPM after a push, and recovers better than Manual</td><td>Blade count or video; encoder RPM</td></tr>
+    <tr><td>F. Feedback hold</td><td>Coils stay off at rest, and the ±1° band is restored after nudges, including one larger than 3.6°</td><td>Protractor; DC supply current</td></tr>
+    <tr><td>G. Forced desync and return to zero</td><td>After lost steps, set to zero returns the reference blade to 0°</td><td>Printed protractor</td></tr>
+  </table>
+  <p><em>[Add results, graphs and links to log files here as tests are completed.]</em></p>
+
+  <hr class="section">
   <h2 id="overview">Project Overview</h2>
   <p>PARMCO is a Raspberry Pi 4 motor control system that drives a NEMA 17 stepper motor through an SN754410NE H-bridge. It uses an AS5600 magnetic encoder for position feedback and an IR sensor for detection, and it is controlled from a custom iOS app over Bluetooth.</p>
   <div class="parts">
