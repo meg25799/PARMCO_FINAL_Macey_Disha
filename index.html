@@ -5,43 +5,89 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PARMCO Final Project | Macey Glad &amp; Disha Rachur</title>
   <style>
-    :root { --main: #1a5276; --light: #eaf2f8; --gray: #555; }
+    :root {
+      --bg: #0a0a0d;          /* page black */
+      --surface: #15121c;     /* card black-purple */
+      --surface2: #1e1828;    /* alt rows */
+      --purple: #b388ff;      /* main accent (high contrast on black) */
+      --purple-dark: #6a1bd1; /* header / borders */
+      --text: #f4f1fa;        /* main text */
+      --muted: #c9c1d9;       /* secondary text (still high contrast) */
+      --line: #3a2d52;
+    }
     * { box-sizing: border-box; }
-    body { font-family: "Segoe UI", Arial, sans-serif; margin: 0; background: #f7f9fb; color: #222; line-height: 1.6; }
-    header { background: var(--main); color: white; padding: 40px 20px 30px; text-align: center; }
-    header h1 { margin: 0 0 5px; font-size: 2.3em; }
-    header p { margin: 0; opacity: 0.9; }
-    nav { background: #154360; text-align: center; padding: 10px; position: sticky; top: 0; z-index: 10; }
-    nav a { color: white; text-decoration: none; margin: 0 14px; font-weight: 600; }
-    nav a:hover { text-decoration: underline; }
-    main { max-width: 1000px; margin: auto; padding: 20px; }
-    h2 { color: var(--main); border-bottom: 3px solid var(--main); padding-bottom: 5px; margin-top: 45px; }
+    body { font-family: "Segoe UI", Arial, sans-serif; margin: 0; background: var(--bg); color: var(--text); line-height: 1.65; font-size: 17px; }
+    a { color: var(--purple); }
+    a:focus, .btn:focus, summary:focus { outline: 3px solid #ffffff; outline-offset: 2px; }
+
+    header { background: linear-gradient(135deg, #000000 0%, var(--purple-dark) 100%); padding: 50px 20px 40px; text-align: center; border-bottom: 4px solid var(--purple); }
+    header h1 { margin: 0 0 6px; font-size: 2.5em; color: #ffffff; letter-spacing: 1px; }
+    header .subtitle { margin: 0 0 6px; font-size: 1.15em; color: #e9dcff; }
+    header p { margin: 0; color: #e9dcff; }
+
+    nav { background: #000000; text-align: center; padding: 12px 8px; position: sticky; top: 0; z-index: 10; border-bottom: 2px solid var(--purple-dark); }
+    nav a { color: #ffffff; text-decoration: none; margin: 0 10px; font-weight: 700; display: inline-block; padding: 2px 4px; }
+    nav a:hover { color: var(--purple); text-decoration: underline; }
+
+    main { max-width: 1050px; margin: auto; padding: 20px; }
+    h2 { color: var(--purple); border-bottom: 3px solid var(--purple); padding-bottom: 6px; margin-top: 55px; font-size: 1.8em; }
+    h3 { color: #ffffff; margin-top: 30px; }
+    p, li { color: var(--text); }
+    .lead { font-size: 1.12em; }
+    .muted { color: var(--muted); }
+
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }
-    .card { background: white; border-radius: 10px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border-top: 4px solid var(--main); }
-    .card h3 { margin: 0 0 6px; font-size: 1.1em; }
-    .card p { margin: 0 0 12px; color: var(--gray); font-size: 0.95em; }
-    .btn { display: inline-block; background: var(--main); color: white; padding: 6px 14px; border-radius: 6px; text-decoration: none; font-size: 0.9em; margin-right: 6px; }
-    .btn.alt { background: white; color: var(--main); border: 1px solid var(--main); }
-    .btn:hover { opacity: 0.85; }
+    .card { background: var(--surface); border: 1px solid var(--line); border-top: 4px solid var(--purple); border-radius: 10px; padding: 18px; }
+    .card h3 { margin: 0 0 8px; font-size: 1.1em; color: #ffffff; }
+    .card p { margin: 0 0 12px; color: var(--muted); font-size: 0.97em; }
+
+    .btn { display: inline-block; background: var(--purple); color: #000000; padding: 7px 15px; border-radius: 6px; text-decoration: none; font-size: 0.92em; font-weight: 700; margin: 4px 6px 0 0; }
+    .btn.alt { background: transparent; color: var(--purple); border: 2px solid var(--purple); }
+    .btn:hover { background: #ffffff; color: #000000; }
+
     details { margin-top: 12px; }
-    summary { cursor: pointer; color: var(--main); font-weight: 600; }
-    iframe { width: 100%; height: 600px; border: 1px solid #ccc; border-radius: 6px; margin-top: 10px; }
-    .parts { background: var(--light); padding: 12px 18px; border-radius: 8px; }
-    .human-edit { background: #fff3cd; border-left: 4px solid #e0a800; padding: 8px; }
-    footer { text-align: center; color: var(--gray); padding: 30px; font-size: 0.9em; }
+    summary { cursor: pointer; color: var(--purple); font-weight: 700; }
+    iframe { width: 100%; height: 600px; border: 2px solid var(--line); border-radius: 6px; margin-top: 10px; background: #ffffff; }
+
+    .flow { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; margin: 20px 0; }
+    .flow .box { background: var(--surface); border: 2px solid var(--purple); border-radius: 8px; padding: 10px 14px; text-align: center; font-weight: 700; min-width: 130px; color: #ffffff; }
+    .flow .box small { display: block; font-weight: normal; color: var(--muted); }
+    .flow .arrow { font-size: 1.6em; color: var(--purple); font-weight: 700; }
+
+    table.spec { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 0.95em; background: var(--surface); }
+    table.spec th { background: var(--purple-dark); color: #ffffff; text-align: left; padding: 9px 10px; }
+    table.spec td { border-bottom: 1px solid var(--line); padding: 9px 10px; vertical-align: top; color: var(--text); }
+    table.spec tr:nth-child(even) td { background: var(--surface2); }
+    .table-wrap { overflow-x: auto; }
+
+    .callout { background: var(--surface); border-left: 6px solid var(--purple); padding: 14px 18px; border-radius: 6px; margin: 18px 0; }
+    .callout strong { color: var(--purple); }
+    .ref { font-size: 0.95em; margin-top: 10px; background: var(--surface); padding: 10px 14px; border-radius: 6px; border: 1px solid var(--line); }
+    .ref a { font-weight: 700; }
+    .tag { display: inline-block; background: var(--purple); color: #000000; font-size: 0.7em; padding: 2px 9px; border-radius: 10px; margin-left: 8px; vertical-align: middle; font-weight: 700; }
+    .pass { color: #7dffa8; font-weight: 700; }
+    hr.section { border: none; border-top: 1px solid var(--line); margin: 50px 0 10px; }
+    .human-edit { background: #2a1f00; border-left: 5px solid #ffcc33; padding: 12px 16px; border-radius: 6px; color: #fff6dc; }
+    .human-edit p { color: #fff6dc; }
+    footer { text-align: center; color: var(--muted); padding: 35px; font-size: 0.92em; border-top: 2px solid var(--purple-dark); margin-top: 50px; background: #000000; }
   </style>
 </head>
 <body>
 
 <header>
-  <h1>PARMCO Final Project</h1>
+  <h1>PARMCO</h1>
+  <p class="subtitle">Phone App RP4 Motor Control: a Bluetooth-controlled, closed-loop stepper motor system</p>
   <p>Macey Glad &amp; Disha Rachur | ECSE 4235, University of Georgia, Fall 2026</p>
 </header>
 
 <nav>
   <a href="#overview">Overview</a>
-  <a href="#hardware">Hardware</a>
-  <a href="#software">Software</a>
+  <a href="#how">How It Works</a>
+  <a href="#control">Control Modes</a>
+  <a href="#development">Development</a>
+  <a href="#testing">Results</a>
+  <a href="#hardware">Hardware Docs</a>
+  <a href="#software">Software Docs</a>
   <a href="#app">iOS App</a>
   <a href="#ai">AI Interaction</a>
 </nav>
@@ -49,23 +95,26 @@
 <main>
 
   <!-- ================= OVERVIEW ================= -->
-  <!-- ================= OVERVIEW ================= -->
-  <style>
-    .lead { font-size: 1.08em; }
-    .flow { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; margin: 20px 0; }
-    .flow .box { background: white; border: 2px solid var(--main); border-radius: 8px; padding: 10px 14px; text-align: center; font-weight: 600; min-width: 120px; }
-    .flow .box small { display: block; font-weight: normal; color: var(--gray); }
-    .flow .arrow { font-size: 1.5em; color: var(--main); }
-    table.spec { width: 100%; border-collapse: collapse; margin: 15px 0; background: white; font-size: 0.95em; }
-    table.spec th { background: var(--main); color: white; text-align: left; padding: 8px 10px; }
-    table.spec td { border-bottom: 1px solid #ddd; padding: 8px 10px; vertical-align: top; }
-    table.spec tr:nth-child(even) td { background: #f4f8fb; }
-    .callout { background: var(--light); border-left: 5px solid var(--main); padding: 12px 16px; border-radius: 6px; margin: 15px 0; }
-    .ref { font-size: 0.9em; margin-top: 8px; }
-    .ref a { color: var(--main); font-weight: 600; }
-    hr.section { border: none; border-top: 1px solid #d5dde5; margin: 40px 0 10px; }
-    .tag { display: inline-block; background: var(--main); color: white; font-size: 0.75em; padding: 2px 8px; border-radius: 10px; margin-left: 6px; vertical-align: middle; }
-  </style>
+  <h2 id="overview">Project Overview</h2>
+  <p class="lead"><strong>PARMCO</strong> is a phone-controlled, closed-loop stepper motor system. A custom iOS app talks over Bluetooth Low Energy to a Raspberry Pi 4 (RP4). The RP4 drives a NEMA 17 stepper motor through an SN754410NE H-bridge, reads an AS5600 magnetic encoder and an IR sensor, and reports speed and angle back to the app. A two-blade propeller on the motor shaft, read against a printed protractor, is the visual indicator of speed and angle.</p>
+  <p>The system solves two control problems with one motor and one encoder:</p>
+  <ul>
+    <li><strong>Speed control:</strong> Manual mode (open loop) and Maintain mode (closed loop).</li>
+    <li><strong>Position control:</strong> calibrate zero, set to zero (return to home), angle targets and an encoder-based feedback hold.</li>
+  </ul>
+  <p>PARMCO runs <strong>standalone</strong>. The RP4 starts the PARMCO program automatically at boot through a systemd service, keeps the motor disabled, and waits for the phone to connect. It needs only power: no keyboard, monitor, internet or AI.</p>
+
+  <div class="grid">
+    <div class="card"><h3>Step mode</h3><p>Half-step: 0.9° per step, 400 steps per revolution, for finer angle resolution.</p></div>
+    <div class="card"><h3>Speed range</h3><p>10–100 RPM in normal use. An over-range unlock allows higher speeds for open-loop testing only.</p></div>
+    <div class="card"><h3>Languages</h3><p>ARM32 assembly (motor interface), C on Linux (control, Bluetooth, sensors, logging), Swift/SwiftUI (iOS app).</p></div>
+  </div>
+
+  <div class="callout">
+    <strong>Built with AI as the primary author.</strong> The software, hardware design, documentation and this website were generated by AI (ChatGPT Plus, Gemini Pro and Microsoft Copilot with Claude) and directed, tested and confirmed by the team. Human changes are marked, and the AI originals are kept in version history.
+  </div>
+
+  <hr class="section">
 
   <!-- ================= HOW IT WORKS ================= -->
   <h2 id="how">How the System Works</h2>
@@ -73,35 +122,40 @@
   <h3>System Architecture</h3>
   <p>The phone sends commands, the RP4 closes the control loop, and the sensors report back.</p>
   <div class="flow">
-    <div class="box">iOS App<small>controls + status</small></div>
+    <div class="box">iOS App<small>controls + live status</small></div>
     <span class="arrow">⇄</span>
-    <div class="box">Bluetooth<small>remembered pairing</small></div>
+    <div class="box">Bluetooth LE<small>GATT service</small></div>
     <span class="arrow">⇄</span>
     <div class="box">Raspberry Pi 4<small>C + ARM assembly</small></div>
     <span class="arrow">→</span>
     <div class="box">4N25 + SN754410NE<small>enable + H-bridge</small></div>
     <span class="arrow">→</span>
-    <div class="box">NEMA 17 + Propeller<small>1.8° / step</small></div>
+    <div class="box">NEMA 17 + Propeller<small>0.9° half-steps</small></div>
   </div>
   <div class="flow">
     <div class="box">AS5600 Encoder<small>shaft angle (I2C)</small></div>
     <span class="arrow">→</span>
-    <div class="box">Raspberry Pi 4<small>feedback control</small></div>
+    <div class="box">Raspberry Pi 4<small>feedback + logging</small></div>
     <span class="arrow">←</span>
     <div class="box">IR Sensor<small>2 pulses / rev</small></div>
   </div>
 
   <h3>Hardware Design</h3>
+  <div class="table-wrap">
   <table class="spec">
     <tr><th>Component</th><th>Role in PARMCO</th></tr>
-    <tr><td>Raspberry Pi 4</td><td>Runs the motor, sensor, control and logging code. Boots quiet and reports RPM and angle to the app.</td></tr>
-    <tr><td>NEMA 17 stepper (XY42STH34-0354A)</td><td>Actuator: 1.8° per step, 200 steps per revolution, rated 12 V and 0.35 A per phase. The propeller mounts on its shaft.</td></tr>
-    <tr><td>SN754410NE quad half-H driver</td><td>Wired as two H-bridges, one for each motor coil. VCC1 (pin 16, 5 V logic) and VCC2 (pin 8, 12 V motor) come from the bench DC supply, never from the RP4.</td></tr>
-    <tr><td>4N25 optocoupler</td><td>Isolated on/off enable for the H-bridge. Wired so the motor is disabled whenever the RP4 GPIO is low or floating, so the hardware guarantees a quiet start-up, even during boot.</td></tr>
-    <tr><td>AS5600 magnetic encoder</td><td>Measures the absolute shaft angle over I2C. Mounted on the class 3D-printed motor stand. Used for Maintain, set to zero, angle targets and the feedback hold.</td></tr>
-    <tr><td>IR sensor</td><td>Measures propeller RPM. The two-blade propeller gives two pulses per revolution.</td></tr>
+    <tr><td>Raspberry Pi 4</td><td>Runs the motor, sensor, control, Bluetooth and logging code. Boots quiet and reports RPM and angle to the app.</td></tr>
+    <tr><td>NEMA 17 stepper (XY42STH34-0354A)</td><td>Actuator: 1.8° per full step (0.9° in half-step mode), rated 12 V and 0.35 A per phase. The propeller mounts on its shaft.</td></tr>
+    <tr><td>SN754410NE quad half-H driver</td><td>Wired as two H-bridges, one per motor coil. VCC1 (pin 16, 5 V logic) and VCC2 (pin 8, 12 V motor) come from the bench DC supply, never from the RP4.</td></tr>
+    <tr><td>4N25 optocoupler</td><td>Isolated on/off enable for the H-bridge, driven from <strong>GPIO 26</strong>. Wired so the motor is disabled whenever the GPIO is low or floating, so the hardware guarantees a quiet start-up.</td></tr>
+    <tr><td>AS5600 magnetic encoder</td><td>Measures the absolute shaft angle over I2C (SDA on GPIO 2, SCL on GPIO 3). Mounted on the class 3D-printed motor stand.</td></tr>
+    <tr><td>IR sensor</td><td>Measures propeller RPM. Reflective tape on the underside of both blades gives a reliable pulse for each blade, so two pulses per revolution.</td></tr>
     <tr><td>Propeller + printed protractor</td><td>Visual and independent reference. One blade is marked as the main reference blade.</td></tr>
   </table>
+  </div>
+  <div class="callout">
+    <strong>Hardware lessons learned:</strong> the propeller had to be pushed fully down the motor shaft for reliable motion. Reflective tape on the blades was needed for consistent IR readings (suggested by classmate Zac Brammer). The IR sensor's metal housing must not touch the motor body. Replacing a propeller that slipped on the shaft fixed angle targets that were landing 10–20° short.
+  </div>
   <p class="ref">📄 References:
     <a href="Hardware_Docs/PARMCO_Schematic_Detailed.pdf" target="_blank">Detailed Schematic</a> ·
     <a href="Hardware_Docs/PARMCO_Circuit_Analysis__How_it_Works__CP2.pdf" target="_blank">Circuit Analysis: How It Works</a> ·
@@ -110,20 +164,26 @@
 
   <h3>Software Design</h3>
   <p>The software is split into three layers so that time-critical motor control stays fast and predictable.</p>
+  <div class="table-wrap">
   <table class="spec">
-    <tr><th>Layer</th><th>Language</th><th>Responsibilities</th></tr>
-    <tr><td>Motor interface</td><td>ARM assembly</td><td><strong>Step routine:</strong> looks up the next coil pattern in a table and drives the four H-bridge inputs. <strong>Enable routine:</strong> turns the H-bridge on and off through the 4N25. <strong>Step-timing loop:</strong> uses the ARM generic timer to wait until each step is due. These routines are called from C using the AAPCS convention.</td></tr>
-    <tr><td>Control and services</td><td>C (Linux)</td><td>Bluetooth communication, encoder reads, RPM calculation, speed and position control math, feedback hold and CSV logging. All GPIO access goes through the class RP4 library.</td></tr>
-    <tr><td>User interface</td><td>Swift / SwiftUI</td><td>iOS app with every control, a live status display, input validation and Bluetooth connection management.</td></tr>
+    <tr><th>Layer</th><th>Files</th><th>Responsibilities</th></tr>
+    <tr><td>Motor interface (ARM32 assembly)</td><td>motorDriver.s</td><td><strong>Step routine:</strong> looks up the next half-step coil pattern in a table and drives the four H-bridge inputs. <strong>Enable routine:</strong> turns the H-bridge on and off through the 4N25. <strong>Step-timing loop:</strong> uses the ARM generic timer to wait until each step is due. These routines are called from C using the AAPCS convention, and all GPIO access goes through the class E4235 library.</td></tr>
+    <tr><td>Motor control and sensors (C)</td><td>motor_cp3.c, motor_cp3.h</td><td>Continuous rotation at the commanded step rate, IR pulse timing and RPM, AS5600 angle reads and encoder-derived RPM, calibration and position moves, and CSV logging.</td></tr>
+    <tr><td>Bluetooth server (C)</td><td>parmco_ble_cp3.c</td><td>A BLE GATT server built on BlueZ with GLib/GIO. It advertises as PARMCO, receives commands from the phone, acknowledges each one (for example <code>ACK:START</code>), and streams live status back to the app.</td></tr>
+    <tr><td>iOS app (Swift)</td><td>PARMCOApp.swift, ContentView.swift, BluetoothManager.swift</td><td>The SwiftUI interface and a CoreBluetooth manager that scans for the PARMCO service, connects, sends commands, receives notifications and shows connection state.</td></tr>
+    <tr><td>Start-up service</td><td>parmco.service (systemd)</td><td>Launches the PARMCO program after Bluetooth is available at boot and restarts it automatically if it stops, so the RP4 runs with no keyboard or terminal.</td></tr>
   </table>
-  <p class="ref">📄 Reference:
-    <a href="Software_Docs/PARMCO_CP2_Software_Documentation_Final.pdf" target="_blank">Software Design Documentation</a>
+  </div>
+  <p class="ref">📄 References:
+    <a href="Software_Docs/PARMCO_CP3_Software_Documentation_Final.pdf" target="_blank">Software Documentation (latest)</a> ·
+    <a href="Software_Docs/PARMCO_CP2_Software_Documentation_Final.pdf" target="_blank">CP2 Software Documentation</a>
   </p>
 
   <h3>Start-up and Bluetooth Behavior</h3>
   <ul>
-    <li>The RP4 starts the PARMCO program on its own at boot. The motor stays disabled and coil current stays near zero.</li>
-    <li>The phone requests the Bluetooth connection from inside the app. The pairing is remembered on both devices, and the system can re-pair after the phone "forgets" the connection or the app is uninstalled and reinstalled.</li>
+    <li>At power-up the systemd service starts the PARMCO program. The motor stays disabled, and the shaft turns freely by hand.</li>
+    <li>The phone connects from inside the app with the <strong>Connect to Raspberry Pi</strong> button, and the app shows when it is connected to <em>PARMCO-RP4</em>.</li>
+    <li>Every command the phone sends is shown on the RP4 and acknowledged back to the phone, so both sides confirm the link is working.</li>
     <li>After connecting, the app shows the defaults: <strong>Manual mode, clockwise, 20 RPM, motor stopped, not calibrated</strong>.</li>
   </ul>
 
@@ -133,26 +193,29 @@
   <h2 id="control">App Controls and Control Modes</h2>
 
   <h3>Phone App Controls</h3>
+  <p>The app is organized into panels: Bluetooth Connection, Control Mode, Desired Speed, Direction, Motor State, Bluetooth Messages, Live Motor and Sensor Status, Position Controls, and Logging and Test Controls.</p>
+  <div class="table-wrap">
   <table class="spec">
     <tr><th>Control</th><th>What it does</th></tr>
-    <tr><td>Start / Stop</td><td>Start runs the motor. Stop disables the H-bridge through the 4N25 and turns off all feedback, including the hold, so the propeller turns freely by hand.</td></tr>
-    <tr><td>Direction</td><td>Clockwise or counterclockwise.</td></tr>
-    <tr><td>Faster / Slower</td><td>Changes speed in small steps while running (Manual mode).</td></tr>
-    <tr><td>Desired RPM</td><td>Accepts 10–100 RPM. Values outside that range are rejected with a visible warning, and the motor keeps its current setting.</td></tr>
+    <tr><td>Start / Stop</td><td>Start runs the motor until Stop is pressed. Stop disables the H-bridge through the 4N25 and turns off all feedback, including the hold, so the propeller turns freely by hand.</td></tr>
+    <tr><td>Direction</td><td>Clockwise or counterclockwise. The motor is stopped before changing direction.</td></tr>
+    <tr><td>Faster / Slower</td><td>Changes speed in small steps while the motor runs.</td></tr>
+    <tr><td>Desired RPM + Set RPM</td><td>Accepts 10–100 RPM. Invalid values are rejected with a visible warning, and the motor keeps its current setting.</td></tr>
     <tr><td>Mode selector</td><td>Switches between Manual and Maintain.</td></tr>
-    <tr><td>Calibrate zero</td><td>With the reference blade aligned to 0° on the protractor, stores the current encoder reading as the zero offset.</td></tr>
-    <tr><td>Set to zero</td><td>Returns the reference blade to 0° using encoder feedback. Refused until the system is calibrated.</td></tr>
-    <tr><td>Angle target</td><td>Moves the blade to an entered angle, at the speed set by desired RPM.</td></tr>
-    <tr><td>Logging toggle</td><td>Starts and stops a CSV log on the RP4. The app shows the logging state, file name and elapsed time.</td></tr>
-    <tr><td>Over-range unlock</td><td>Allows speeds above 100 RPM for Tests B and G only. Turns itself off when the motor stops.</td></tr>
-    <tr><td>Status display</td><td>Shows the IR RPM, encoder-derived RPM, encoder angle and calibration status.</td></tr>
+    <tr><td>Calibrate Zero</td><td>With the reference blade aligned to 0° on the protractor, stores the current encoder reading as the zero offset.</td></tr>
+    <tr><td>Set to Zero</td><td>Returns the reference blade to 0° using encoder feedback. Refused until the system is calibrated.</td></tr>
+    <tr><td>Move to Angle</td><td>Moves the blade to an entered angle, at the speed set by desired RPM.</td></tr>
+    <tr><td>Start / Stop CSV Logging</td><td>Starts and stops a CSV log on the RP4. The app shows the logging state, file name and elapsed time. A Mark Event button adds markers to the log.</td></tr>
+    <tr><td>Over-Range Unlock (Tests B/G)</td><td>Allows speeds above 100 RPM, up to 400 RPM, for open-loop tests only. Turns itself off when the motor stops.</td></tr>
+    <tr><td>Live status panel</td><td>Shows the actual IR RPM, encoder RPM, encoder angle and calibration status, plus the last command sent and the RP4's response.</td></tr>
   </table>
+  </div>
 
-  <h3>Speed Control <span class="tag">
+  <h3>Speed Control <span class="tag">Final checkpoint</span></h3>
   <div class="grid">
     <div class="card">
       <h3>Manual Mode (open loop)</h3>
-      <p>The user sets the speed with desired RPM and the faster and slower buttons. The RP4 converts RPM into a step rate and steps at that rate without correcting for errors. If the motor is pushed or slowed, nothing makes up for it.</p>
+      <p>The user sets the speed with desired RPM and the faster and slower buttons. The RP4 converts RPM into a step rate (RPM × 400 steps ÷ 60 s) and steps at that rate without checking the result. If the propeller is pushed or slowed, nothing corrects it.</p>
     </div>
     <div class="card">
       <h3>Maintain Mode (closed loop)</h3>
@@ -160,52 +223,112 @@
     </div>
   </div>
   <div class="callout">
-    <strong>Feedback source:</strong> Maintain can use IR RPM, encoder-derived RPM, or both. At low speed the IR sensor updates slowly: at 20 RPM it gives only about one pulse every 1.5 seconds. The encoder reads the angle continuously, so encoder-derived RPM reacts much faster. <em>[Add your team's chosen source and why.]</em>
+    <strong>Feedback source:</strong> Maintain can use IR RPM, encoder-derived RPM, or both. At low speed the IR sensor updates slowly: at 20 RPM it gives only about one pulse every 1.5 seconds. The encoder reads the angle continuously, so encoder-derived RPM reacts faster. In Test A, the encoder RPM had the lowest error of all sources at 10–30 RPM. <em>[Add your team's chosen source here.]</em>
   </div>
 
   <h3>Position Control <span class="tag">Final checkpoint</span></h3>
   <ol>
-    <li><strong>Calibrate zero:</strong> ties encoder zero to protractor zero. This is required after every power-up. Until then, the app shows "not calibrated" and refuses position commands.</li>
+    <li><strong>Calibrate zero:</strong> ties encoder zero to protractor zero. This is required after every power-up. Until then, the app shows "Not calibrated" and refuses position commands.</li>
     <li><strong>Set to zero:</strong> drives the blade until the offset-corrected encoder angle reads 0°, handling the wrap between 359° and 0°.</li>
-    <li><strong>Angle target:</strong> moves to any entered angle, approaching from either direction, and lands on the nearest reachable step. For example, a 137° target lands at 136.8° in full-step mode.</li>
+    <li><strong>Angle target:</strong> moves to any entered angle from either direction and lands on the nearest half-step (0.9°).</li>
   </ol>
   <p>Because these moves use the encoder rather than the step count, set to zero still returns the blade to 0° after the motor has lost steps.</p>
 
   <h3>Feedback Hold <span class="tag">Final checkpoint</span></h3>
-  <p>After a set to zero or angle target move, PARMCO holds its position <strong>with the encoder instead of coil current</strong>:</p>
+  <p>After a set to zero or angle target move, PARMCO holds position <strong>with the encoder instead of coil current</strong>:</p>
   <ul>
     <li>The RP4 disables the H-bridge, so no coil current flows. The motor's detent torque (about 120 g·cm) holds the unloaded propeller.</li>
-    <li>The encoder keeps watching the shaft. If the error leaves a <strong>±1° band</strong> around the target, the RP4 re-enables the H-bridge, corrects all the way back to the target and disables again. Inside the band it does nothing, so sensor noise cannot cause chatter.</li>
+    <li>The encoder keeps watching the shaft. If the error leaves a <strong>±1° band</strong> around the target, the RP4 re-enables the H-bridge, corrects back to the target and disables again. Inside the band it does nothing, so sensor noise cannot cause chatter.</li>
     <li>Before re-enabling, the RP4 picks the coil pattern that matches the encoder's current angle. Coil patterns repeat every 7.2°, so re-applying the old pattern after a large nudge would snap the rotor a full 7.2° off target.</li>
     <li>Pressing <strong>Stop</strong> cancels the hold, and the shaft then turns freely.</li>
   </ul>
 
   <h3>Data Logging</h3>
-  <p>Logging runs alongside any mode without slowing the control loop. Each CSV row is time-stamped from the Linux monotonic clock and records the mode, commanded RPM and angle, step count and step angle, encoder angle (wrapped and cumulative), IR, encoder and app RPM, enable state, and optional event markers. These logs are the source for all test results.</p>
+  <p>Logging runs alongside any mode without slowing the control loop. Files are saved in a <code>logs</code> folder on the RP4. Each row is time-stamped from the Linux monotonic clock and records the mode, commanded RPM and angle, step count and step angle, encoder angle (wrapped and cumulative), IR, encoder and app RPM, enable state, and event markers. These logs are the source for all test results below.</p>
+
+  <hr class="section">
+
+  <!-- ================= DEVELOPMENT ================= -->
+  <h2 id="development">Development Timeline</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>Checkpoint 1: Motor turns</h3>
+      <p>AI-generated schematic, parts list and assembly instructions. ARM32 motor driver and C keyboard program for enable, direction, one revolution, run/stop and speed. Moved to half-step mode for smoother revolutions. The 4N25 enable was moved from GPIO 4 to GPIO 26 for easier wiring.</p>
+    </div>
+    <div class="card">
+      <h3>Checkpoint 2: Bluetooth + IR</h3>
+      <p>Set up Xcode and iPhone developer mode, built the first SwiftUI app and CoreBluetooth manager, and wrote the RP4 BLE GATT server with two-way acknowledgments. Added IR RPM sensing and passed Test A from the keyboard.</p>
+    </div>
+    <div class="card">
+      <h3>Checkpoint 3: Full app control</h3>
+      <p>Moved every control to the app, added the AS5600 encoder, calibrate zero, set to zero, angle targets, live status, logging and the over-range unlock. Set up launch on startup. Fixed an encoder register-read issue and a slipping propeller. Passed Tests A and B.</p>
+    </div>
+    <div class="card">
+      <h3>Final: Closed-loop control</h3>
+      <p>Adds Maintain mode, closed-loop position correction and the feedback hold. Confirms Bluetooth re-pairing and app reinstall, and runs Tests A–G.</p>
+    </div>
+  </div>
 
   <hr class="section">
 
   <!-- ================= VALIDATION ================= -->
-  <h2 id="testing">Validation Testing</h2>
-  <p>Each function is confirmed with measurements against a reference that works on a different physical principle from the encoder.</p>
+  <h2 id="testing">Validation and Results</h2>
+  <p>Each function is checked against an independent reference (blade counts, slow-motion video or the printed protractor) instead of trusting the encoder alone.</p>
+
+  <h3>Test Plan</h3>
+  <div class="table-wrap">
   <table class="spec">
     <tr><th>Test</th><th>What it shows</th><th>Independent check</th></tr>
     <tr><td>A. RPM sensing and sweep</td><td>IR, encoder-derived and app RPM agree with the commanded speed from 10–100 RPM</td><td>Blade count or slow-motion video</td></tr>
-    <tr><td>B. Open-loop missed steps</td><td>Without feedback, the motor loses steps and the step count no longer matches the shaft position</td><td>Protractor and encoder angle</td></tr>
+    <tr><td>B. Open-loop missed steps</td><td>Without feedback, the motor loses steps and the step count no longer matches the shaft</td><td>Protractor and encoder angle</td></tr>
     <tr><td>C. Static angle accuracy</td><td>Angle targets land within one step from both directions</td><td>Printed protractor</td></tr>
     <tr><td>D. Step response</td><td>How quickly and cleanly the blade moves from 0° to 90° at different speeds</td><td>Protractor and slow-motion video</td></tr>
     <tr><td>E. Disturbance rejection</td><td>Maintain returns to the desired RPM after a push, and recovers better than Manual</td><td>Blade count or video; encoder RPM</td></tr>
-    <tr><td>F. Feedback hold</td><td>Coils stay off at rest, and the ±1° band is restored after nudges, including one larger than 3.6°</td><td>Protractor; DC supply current</td></tr>
+    <tr><td>F. Feedback hold</td><td>Coils stay off at rest, and the ±1° band is restored after nudges</td><td>Protractor; DC supply current</td></tr>
     <tr><td>G. Forced desync and return to zero</td><td>After lost steps, set to zero returns the reference blade to 0°</td><td>Printed protractor</td></tr>
   </table>
-  <p><em>[Add results, graphs and links to log files here as tests are completed.]</em></p>
+  </div>
+
+  <h3>Test A Results: RPM Sensing Through the App</h3>
+  <p>Ten speeds from 10 to 100 RPM, one log per speed. The independent RPM is a 30-second blade count.</p>
+  <div class="table-wrap">
+  <table class="spec">
+    <tr><th>Commanded RPM</th><th>Avg IR RPM</th><th>IR error</th><th>Avg encoder RPM</th><th>Encoder error</th><th>Independent RPM</th><th>Independent error</th></tr>
+    <tr><td>10.05</td><td>9.859</td><td>1.90%</td><td>10.037</td><td>0.13%</td><td>10</td><td>-0.50%</td></tr>
+    <tr><td>20.00</td><td>19.898</td><td>0.51%</td><td>19.907</td><td>0.47%</td><td>21</td><td>+5.00%</td></tr>
+    <tr><td>30.00</td><td>29.890</td><td>0.37%</td><td>29.904</td><td>0.32%</td><td>31</td><td>+3.33%</td></tr>
+    <tr><td>39.90</td><td>39.701</td><td>0.50%</td><td>39.695</td><td>0.51%</td><td>41</td><td>+2.76%</td></tr>
+    <tr><td>50.40</td><td>50.105</td><td>0.59%</td><td>50.105</td><td>0.58%</td><td>52</td><td>+3.17%</td></tr>
+    <tr><td>60.90</td><td>60.437</td><td>0.76%</td><td>60.435</td><td>0.76%</td><td>62</td><td>+1.81%</td></tr>
+    <tr><td>70.35</td><td>69.780</td><td>0.81%</td><td>69.774</td><td>0.82%</td><td>73</td><td>+3.77%</td></tr>
+    <tr><td>80.85</td><td>80.047</td><td>0.99%</td><td>80.045</td><td>1.00%</td><td>82</td><td>+1.42%</td></tr>
+    <tr><td>88.50</td><td>87.509</td><td>1.12%</td><td>87.495</td><td>1.14%</td><td>92</td><td>+3.95%</td></tr>
+    <tr><td>98.55</td><td>97.456</td><td>1.11%</td><td>97.452</td><td>1.11%</td><td>101</td><td>+2.49%</td></tr>
+  </table>
+  </div>
+  <p>The IR and encoder readings stayed within about 2% of the commanded speed at every point, and the app showed the same value as the IR sensor. The encoder was the most accurate source at low speed. The larger independent errors come mostly from the limits of counting blade passes by eye.</p>
+
+  <h3>Test B Results: Open-Loop Missed Steps</h3>
+  <p>Manual mode with the over-range unlock on, ramping up until the motor lost sync. Half-step mode (0.9° per step).</p>
+  <div class="table-wrap">
+  <table class="spec">
+    <tr><th>Trial</th><th>Steps missed at</th><th>Sync lost after</th><th>Total divergence</th><th>Encoder vs. protractor</th><th>Within 2°?</th></tr>
+    <tr><td>1</td><td>271.65 RPM</td><td>12.74 s</td><td>9,059.0° (≈25.2 rev)</td><td>225.09° vs. 225° (+0.09°)</td><td class="pass">Pass</td></tr>
+    <tr><td>2</td><td>285.15 RPM</td><td>12.00 s</td><td>9,429.3° (≈26.2 rev)</td><td>309.64° vs. 310° (−0.36°)</td><td class="pass">Pass</td></tr>
+    <tr><td>3</td><td>271.65 RPM</td><td>10.99 s</td><td>8,456.7° (≈23.5 rev)</td><td>159.70° vs. 160° (−0.30°)</td><td class="pass">Pass</td></tr>
+  </table>
+  </div>
+  <p>Once the motor stalled, the step count kept climbing while the shaft barely moved, so the step count was off by more than 23 revolutions. The encoder still matched the protractor within 0.4°. This is why PARMCO uses the encoder, not the step count, for position control.</p>
+
+  <h3>Tests C–G <span class="tag">Final checkpoint</span></h3>
+  <p class="muted"><em>[Add results, graphs and log file names here as tests are completed.]</em></p>
+
+  <p class="ref">📄 Full reports:
+    <a href="AI_Interaction/Checkpoint2_AI_Interaction.pdf" target="_blank">Checkpoint 2 Report</a> ·
+    <a href="AI_Interaction/AI_Interaction_Checkpoint3.pdf" target="_blank">Checkpoint 3 Report</a>
+  </p>
 
   <hr class="section">
-  <h2 id="overview">Project Overview</h2>
-  <p>PARMCO is a Raspberry Pi 4 motor control system that drives a NEMA 17 stepper motor through an SN754410NE H-bridge. It uses an AS5600 magnetic encoder for position feedback and an IR sensor for detection, and it is controlled from a custom iOS app over Bluetooth.</p>
-  <div class="parts">
-    <strong>Key components:</strong> Raspberry Pi 4 · SN754410NE H-bridge · NEMA 17 stepper · AS5600 encoder (I2C) · IR sensor · iOS Bluetooth app
-  </div>
 
   <!-- ================= HARDWARE ================= -->
   <h2 id="hardware">Hardware Documentation</h2>
@@ -213,7 +336,7 @@
 
     <div class="card">
       <h3>Detailed Schematic</h3>
-      <p>Full wiring of the Pi, H-bridge, motor and sensors.</p>
+      <p>Full wiring of the Pi, H-bridge, 4N25 enable, motor, IR sensor and encoder.</p>
       <a class="btn" href="Hardware_Docs/PARMCO_Schematic_Detailed.pdf" target="_blank">Open PDF</a>
       <details>
         <summary>Preview</summary>
@@ -223,7 +346,7 @@
 
     <div class="card">
       <h3>Circuit Analysis: How It Works (CP2)</h3>
-      <p>Explanation of the H-bridge circuit and how the system operates.</p>
+      <p>Explanation of the H-bridge, optocoupler enable and IR sensor circuits.</p>
       <a class="btn" href="Hardware_Docs/PARMCO_Circuit_Analysis__How_it_Works__CP2.pdf" target="_blank">Open PDF</a>
       <details>
         <summary>Preview</summary>
@@ -252,10 +375,10 @@
   <!-- ================= SOFTWARE ================= -->
   <h2 id="software">Software Documentation</h2>
   <div class="grid">
-      
+
     <div class="card">
       <h3>CP3 Software Documentation</h3>
-      <p>Software design, structure and functionality for Checkpoint 3, including app control, AS5600 encoder support, RPM reporting and logging.</p>
+      <p>Software design, libraries and code flags for app control, AS5600 encoder support, RPM reporting and logging.</p>
       <a class="btn" href="Software_Docs/PARMCO_CP3_Software_Documentation_Final.pdf" target="_blank">Open PDF</a>
       <details>
         <summary>Preview</summary>
@@ -265,7 +388,7 @@
 
     <div class="card">
       <h3>CP2 Software Documentation</h3>
-      <p>Software design, structure and functionality for Checkpoint 2.</p>
+      <p>Software design, library attribution and structure for Checkpoint 2.</p>
       <a class="btn" href="Software_Docs/PARMCO_CP2_Software_Documentation_Final.pdf" target="_blank">Open PDF</a>
       <details>
         <summary>Preview</summary>
@@ -283,7 +406,7 @@
 
   <!-- ================= iOS APP ================= -->
   <h2 id="app">iOS Control App</h2>
-  <p>A SwiftUI app that connects to PARMCO over Bluetooth.</p>
+  <p>A SwiftUI app built in Xcode that connects to PARMCO over Bluetooth with CoreBluetooth.</p>
   <div class="grid">
 
     <div class="card">
@@ -294,13 +417,13 @@
 
     <div class="card">
       <h3>ContentView.swift</h3>
-      <p>Main user interface.</p>
+      <p>Main user interface: every control panel and the live status display.</p>
       <a class="btn" href="https://github.com/meg25799/PARMCO_FINAL_Macey_Disha/blob/main/App_Files/ContentView.swift" target="_blank">View Code</a>
     </div>
 
     <div class="card">
       <h3>BluetoothManager.swift</h3>
-      <p>Handles the Bluetooth connection and communication.</p>
+      <p>Scans for, connects to and exchanges messages with the RP4.</p>
       <a class="btn" href="https://github.com/meg25799/PARMCO_FINAL_Macey_Disha/blob/main/App_Files/BluetoothManager.swift" target="_blank">View Code</a>
     </div>
 
@@ -314,14 +437,13 @@
   </div>
 
   <!-- ================= AI INTERACTION ================= -->
- <!-- ================= AI INTERACTION ================= -->
   <h2 id="ai">AI Interaction &amp; Reflection</h2>
   <p>Documentation of how AI was used at each checkpoint, including what it did well and what needed human correction.</p>
   <div class="grid">
 
     <div class="card">
       <h3>Checkpoint 2: AI Interaction</h3>
-      <p>AI usage, prompts and results for Checkpoint 2.</p>
+      <p>Prompts, results and confirmation for the motor driver, iOS setup, Bluetooth link, IR sensor and documentation.</p>
       <a class="btn" href="AI_Interaction/Checkpoint2_AI_Interaction.pdf" target="_blank">Open PDF</a>
       <details>
         <summary>Preview</summary>
@@ -331,7 +453,7 @@
 
     <div class="card">
       <h3>Checkpoint 3: AI Interaction</h3>
-      <p>AI usage, prompts and results for Checkpoint 3.</p>
+      <p>Prompts, results and confirmation for app control, encoder support, launch on startup, Tests A and B, and this site.</p>
       <a class="btn" href="AI_Interaction/AI_Interaction_Checkpoint3.pdf" target="_blank">Open PDF</a>
       <details>
         <summary>Preview</summary>
@@ -346,19 +468,24 @@
     </div>
 
   </div>
-  <p><strong>Pros and cons of working with AI:</strong> (Reflection on AI Usage in this project:
 
-While this project was completed using primarily AI, with minimal human tweaks, there was a lot of human intervention coming through the prompt writing and fact checking of the project. Group members completed a lot of background research on topics such as Swift, that they were unfamiliar with, to best understand how to begin interacting with the AI prompts.
+  <h3>Pros and Cons of Working with AI</h3>
+  <div class="human-edit">
+    <p><strong>[HUMAN EDIT]</strong> Reflection written by Macey Glad.</p>
 
-For hardware documentation and schematic generation, the process involved many sanity checks with the multimeter and human eye. A faulty connection could cause the destruction of a component or the Raspberry Pi itself, so it was important that the hardware was thoroughly checked over before implementation.
+    <p>While this project was completed using primarily AI, with minimal human tweaks, there was a lot of human intervention coming through the prompt writing and fact checking of the project. Group members completed a lot of background research on topics such as Swift, that they were unfamiliar with, to best understand how to begin interacting with the AI prompts.</p>
 
-We as a group learned quickly that including specific guidelines for the LLM, including specific and strict details in the prompting process was essential to the completion of a good AI generated product. Picking and providing the knowledge such as datasheets, pinouts, and rating sheets and attaching it to the relevant prompts became impactful to the results as well. We as a team did a lot of the searching of the specific relevant information needed for the project beforehand, which made it easier to get a better generated product. Limiting the LLM sources, or directly indicating which sources we felt were most valid helped create results that were accurate the first time and didn't need reprompting.
+    <p>For hardware documentation and schematic generation, the process involved many sanity checks with the multimeter and human eye. A faulty connection could cause the destruction of a component or the Raspberry Pi itself, so it was important that the hardware was thoroughly checked over before implementation.</p>
 
-Pros: AI resources were great at creating time consuming graphs and visuals, the base code generation for extremely limited application requirements generally came out well, reduced reporting time due to the elimination of graph making by hand, provided helpful directions for processes that we were unfamiliar with beforehand (using Swift and Apple Developer Tools, GitHub Pages, ect.)
+    <p>We as a group learned quickly that including specific guidelines for the LLM, including specific and strict details in the prompting process was essential to the completion of a good AI generated product. Picking and providing the knowledge such as datasheets, pinouts, and rating sheets and attaching it to the relevant prompts became impactful to the results as well. We as a team did a lot of the searching of the specific relevant information needed for the project beforehand, which made it easier to get a better generated product. Limiting the LLM sources, or directly indicating which sources we felt were most valid helped create results that were accurate the first time and didn't need reprompting.</p>
 
-Cons: Since the LLMs have such large knowledge bases sometimes the prompts would generate answers that were not most helpful to our application, making small edits to schematics (such as switching a single GPIO) would take a long time and often introduce confusing drawings, the quality of generated answers is highly dependent on the quality of the prompting so if you have little background knowledge it can be hard to know what to prompt, the quality of some of the results were below our personal standard but because of the minimal tweak limitation it slowed our documentation process down often due to continuous re-prompting small details
+    <p><strong>Pros:</strong> AI resources were great at creating time consuming graphs and visuals, the base code generation for extremely limited application requirements generally came out well, reduced reporting time due to the elimination of graph making by hand, provided helpful directions for processes that we were unfamiliar with beforehand (using Swift and Apple Developer Tools, GitHub Pages, ect.)</p>
 
-Overall, the group felt that the project was informative in which tools were better at certain processes and how to go about quality checking AI's outputs systematically.)</p>
+    <p><strong>Cons:</strong> Since the LLMs have such large knowledge bases sometimes the prompts would generate answers that were not most helpful to our application, making small edits to schematics (such as switching a single GPIO) would take a long time and often introduce confusing drawings, the quality of generated answers is highly dependent on the quality of the prompting so if you have little background knowledge it can be hard to know what to prompt, the quality of some of the results were below our personal standard but because of the minimal tweak limitation it slowed our documentation process down often due to continuous re-prompting small details</p>
+
+    <p>Overall, the group felt that the project was informative in which tools were better at certain processes and how to go about quality checking AI's outputs systematically.</p>
+    <p><strong>[END HUMAN EDIT]</strong></p>
+  </div>
 
 </main>
 
